@@ -1,0 +1,31 @@
+# 1 - window met browser die de lokaal draaiende avnav webserver bekijkt (die zonder links en recht en onder metertjes en knoppen draait) en meeschaalt;
+
+# 2 - ‘group’
+  # lefttop
+     (knoppenbalk, afhankelijk van een state (global of ‘local’)), 7% breed, kleeft aan rechterkant en top, groeit naar benee
+  # bottom row, kleeft tegen onderkant aan #1 7 (?) % hoog - fixed
+      (metertjes en of knoppen (config))
+  # bottom left
+   (metertjes (config))
+
+Hele venster #1 -> VNC
+
+metertjes zijn unix processen. cmdline + params + positie in knoppen/meterbalken. Dat zijn er max 32, mss 48; kan prima als unix process; geen moeilijke threading/async/locking ellende.
+
+iets met IPC + ‘retained store’ om data op te duwen vanuit sensors (b.v. gpsd). Of gwn stdin/stdout/stderr json data… nog makkelijker… the unix ‘pipe’ filosofie. proces. doet zelf ‘retained store’; = laatste N Mb aan ontvangen data die ook naar disk geflushed wordt.
+
+pid files /var/run/(iets).pid # per knop/meter unix proces = gelijk het ‘custom plugin protocol’. Upload maar een .json met base 64 encoded binary. Dat is je nieuwe meter/knop.
+
+/var/log/iets.log
+
+Enfin. Eitje.
+
+Miniatuur executable (gecompileerd; go/c/c++). Of gwn shell scriptjes. 
+
+Overkoepelende daemon (?) die alles control(d; a la yarosa ;)). Of gwn systemd/systemctl (moet ik nog leren).
+
+En met vnc data outer window #1 vnc uitserveren.
+
+binaries (heule kleine) voor ios, android die vnc client zijn. autoconnect naar ip plotter(.local). of iets tbv service discovery (bv bonjour, maar zijn er zat van (iets in kubernetes vast).
+
+kubernetes deployment met bovenstaande daemon/server. En nog eea.
